@@ -117,7 +117,7 @@ router.post('/sendpdf/:chatname', async (req, res) => {
             client.getChats().then((data) => {
                 data.some(chat => {
                     if (chat.id.server === "g.us" && chat.name === chatname) {
-                        mediadownloader(image, path, () => {
+                        mediadownloader(pdf, path, () => {
                             let media = MessageMedia.fromFilePath(path);
                             client.sendMessage(chat.id._serialized, media).then((response)=>{
                                 if (response.id.fromMe) {
