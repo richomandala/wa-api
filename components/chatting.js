@@ -55,7 +55,11 @@ router.post('/sendimage/:phone', async (req,res) => {
                 client.sendMessage(`${phone}@c.us`, media, { caption: caption || '' }).then((response) => {
                     if (response.id.fromMe) {
                         res.send({ status: 'success', message: `MediaMessage successfully sent to ${phone}` })
-                        fs.unlinkSync(path)
+                        try {
+                          fs.unlinkSync(path);
+                        } catch (error) {
+                          console.log(error);
+                        }
                     }
                 });
             })
@@ -92,7 +96,11 @@ router.post('/sendpdf/:phone', async (req,res) => {
                 client.sendMessage(`${phone}@c.us`, media).then((response) => {
                     if (response.id.fromMe) {
                         res.send({ status: 'success', message: `MediaMessage successfully sent to ${phone}` })
-                        fs.unlinkSync(path)
+                        try {
+                          fs.unlinkSync(path);
+                        } catch (error) {
+                          console.log(error);
+                        }
                     }
                 });
             })

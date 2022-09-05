@@ -55,7 +55,7 @@ router.post('/sendimage/:chatname', async (req, res) => {
                         client.sendMessage(chat.id._serialized, media, { caption: caption || "" }).then((response) => {
                             if (response.id.fromMe) {
                                 res.send({ status: 'success', message: `Message successfully send to ${chatname}` })
-                                fs.unlinkSync(path)
+                                // fs.unlinkSync(path)
                             }
                         });
                     }
@@ -71,7 +71,11 @@ router.post('/sendimage/:chatname', async (req, res) => {
                             client.sendMessage(chat.id._serialized, media, { caption: caption || "" }).then((response)=>{
                                 if (response.id.fromMe) {
                                     res.send({ status: 'success', message: `Message successfully send to ${chatname}` })
-                                    fs.unlinkSync(path)
+                                    try {
+                                      fs.unlinkSync(path);
+                                    } catch (error) {
+                                      console.log(error);
+                                    }
                                 }
                             });
                         });
@@ -105,7 +109,7 @@ router.post('/sendpdf/:chatname', async (req, res) => {
                         client.sendMessage(chat.id._serialized, media).then((response) => {
                             if(response.id.fromMe){
                                 res.send({ status: 'success', message: `Message successfully send to ${chatname}` })
-                                fs.unlinkSync(path)
+                                // fs.unlinkSync(path)
                             }
                         });
                         return true;
@@ -122,7 +126,11 @@ router.post('/sendpdf/:chatname', async (req, res) => {
                             client.sendMessage(chat.id._serialized, media).then((response)=>{
                                 if (response.id.fromMe) {
                                     res.send({ status: 'success', message: `Message successfully send to ${chatname}` })
-                                    fs.unlinkSync(path)
+                                    try {
+                                      fs.unlinkSync(path);
+                                    } catch (error) {
+                                      console.log(error);
+                                    }
                                 }
                             });
                         });
