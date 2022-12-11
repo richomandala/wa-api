@@ -26,9 +26,13 @@ router.post('/sendmessage/:chatname', async (req, res) => {
                         if (response.id.fromMe) {
                             res.send({ status: 'success', message: `Message successfully send to ${chatname}` })
                         }
+                    }).catch((err) => {
+                        res.send({ status: 'error', message: err })
                     });
                 }
             });     
+        }).catch((err) => {
+            res.send({ status: 'error', message: err })
         });
     }
 });
@@ -57,9 +61,13 @@ router.post('/sendimage/:chatname', async (req, res) => {
                                 res.send({ status: 'success', message: `Message successfully send to ${chatname}` })
                                 // fs.unlinkSync(path)
                             }
+                        }).catch((err) => {
+                            res.send({ status: 'error', message: err })
                         });
                     }
                 });     
+            }).catch((err) => {
+                res.send({ status: 'error', message: err })
             });
         } else if (vuri.isWebUri(image)) {
             var path = './temp/' + image.split("/").slice(-1)[0]
@@ -77,12 +85,16 @@ router.post('/sendimage/:chatname', async (req, res) => {
                                       console.log(error);
                                     }
                                 }
+                            }).catch((err) => {
+                                res.send({ status: 'error', message: err })
                             });
                         });
                         
                     }
                 });     
-            });            
+            }).catch((err) => {
+                res.send({ status: 'error', message: err })
+            });
         } else {
             res.send({ status: 'error', message: 'Invalid URL/Base64 Encoded Media' })
         }

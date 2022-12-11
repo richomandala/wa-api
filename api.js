@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
@@ -75,6 +76,7 @@ const contactRoute = require("./components/contact");
 
 app.use(function (req, res, next) {
   console.log(req.method + " : " + req.path);
+  console.log(req.body);
   next();
 });
 app.use("/chat", chatRoute);

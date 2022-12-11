@@ -22,7 +22,9 @@ router.post('/sendmessage/:phone', async (req,res) => {
             if (response.id.fromMe) {
                 res.send({ status:'success', message: `Message successfully sent to ${phone}` })
             }
-        });
+        }).catch((err) => {
+            res.send({ status:'error', message: err })
+        })
     }
 });
 
@@ -42,6 +44,8 @@ router.post('/sendimage/:phone', async (req,res) => {
                 if (response.id.fromMe) {
                     res.send({ status: 'success', message: `MediaMessage successfully sent to ${phone}` })
                 }
+            }).catch((err) => {
+                res.send({ status: 'error', message: err })
             });
         } else if (vuri.isWebUri(image)) {
             if (!fs.existsSync('./temp')) {
@@ -61,6 +65,8 @@ router.post('/sendimage/:phone', async (req,res) => {
                           console.log(error);
                         }
                     }
+                }).catch((err) => {
+                    res.send({ status: 'error', message: err })
                 });
             })
         } else {
