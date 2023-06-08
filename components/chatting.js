@@ -12,18 +12,56 @@ const mediadownloader = (url, path, callback) => {
     })
   }
 
+// router.post('/sendmessage/:phone', async (req,res) => {
+//     let phone = req.params.phone;
+//     let message = req.body.message;
+//     if (phone == undefined || message == undefined) {
+//         res.send({ status:"error", message:"please enter valid phone and message" })
+//     } else {
+//         client.sendMessage(phone + '@c.us', message).then((response) => {
+//             if (response.id.fromMe) {
+//                 res.send({ status:'success', message: `Message successfully sent to ${phone}` })
+//             }
+//         }).catch((err) => {
+//             res.send({ status:'error', message: err })
+//         })
+//     }
+// });
+
 router.post('/sendmessage/:phone', async (req,res) => {
     let phone = req.params.phone;
     let message = req.body.message;
     if (phone == undefined || message == undefined) {
         res.send({ status:"error", message:"please enter valid phone and message" })
     } else {
-        client.sendMessage(phone + '@c.us', message).then((response) => {
-            if (response.id.fromMe) {
-                res.send({ status:'success', message: `Message successfully sent to ${phone}` })
+        client.isRegisteredUser(`${phone}@c.us`).then((is) => {
+            if (is) {
+                client.sendMessage(phone + '@c.us', message).then((response) => {
+                    if (response.id.fromMe) {
+                        client.getChatById(`${phone}@c.us`).then((chat) => {
+                            let status = "";
+                            if (chat.lastMessage.ack == 1) {
+                                status = "Checklist 1";
+                            } else if (chat.lastMessage.ack == 2) {
+                                status = "Checklist 2";
+                            } else if (chat.lastMessage.ack == 3) {
+                                status = "Read";
+                            } else {
+                                status = "Unknown. Please check manually on WhatsApp";
+                            }
+                            res.send({ status:'success', message: `Message successfully sent to ${phone}`, status_pesan: status });
+                        }).catch(() => {
+                            res.send({ status:'success', message: `Message successfully sent to ${phone}`, status_pesan: "Unknown. Please check manually on WhatsApp" });
+                        })
+                    } else {
+                        res.send({ status:'error', message: 'Error sending message' });
+                    }
+                }).catch((err) => {
+                    res.send({ status:'error', message: err });
+                })
+            } else {
+                res.send({ status:'error', message: `${phone} is not a whatsapp user` });
             }
-        }).catch((err) => {
-            res.send({ status:'error', message: err })
         })
     }
 });
