@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { MessageInfo } = require("whatsapp-web.js");
 
 router.get('/getcontacts', (req, res) => {
     client.getContacts().then((contacts) => {

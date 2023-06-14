@@ -3,4 +3,5 @@ session.json
 temp
 components/last.qr
 .wwebjs_auth/
+.wwebjs_cache/
 .env

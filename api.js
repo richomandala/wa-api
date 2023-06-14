@@ -92,6 +92,8 @@ app.use("/group", groupRoute);
 app.use("/auth", authRoute);
 app.use("/contact", contactRoute);
 
+app.use("/public", express.static("public"));
+
 app.listen(port, () => {
   console.log("Server Running Live on Port : " + port);
 });
